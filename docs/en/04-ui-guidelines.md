@@ -125,12 +125,14 @@ Must show at the top:
 Secondary elements:
 - monthly income
 - monthly expenses
-- simple period selector
+- explicit period selector
+- yearly trend card with income / expenses / balance toggle
 - shortcut for new transaction
 
 Rules:
-- no overloaded charts in V1;
+- keep charts compact and focused on one yearly trend at a time;
 - key numbers readable at a glance;
+- period selection must be faster than editing filters manually;
 - quick action always prominent.
 
 ## 6.2 Accounts Screen
@@ -147,6 +149,7 @@ Rules:
 - clean list;
 - no unnecessary row information;
 - detail/edit accessible with simple tap;
+- swipe right-to-left must expose delete with confirmation;
 - clearly visible CTA to add an account.
 
 ## 6.3 Transactions Screen
@@ -164,6 +167,7 @@ Rules:
 - clear chronological ordering;
 - visual distinction between income and expense should be readable but not aggressive;
 - transfers must be distinguishable;
+- swipe right-to-left must expose delete with confirmation;
 - period filter should be simple.
 
 ## 6.4 Transaction Form
@@ -193,28 +197,32 @@ Rules:
 ## 6.5 Budget Screen
 Goal:
 - configure income, target, and planned expenses;
-- show available and remaining budget.
+- show available and remaining budget;
+- optionally help the user with an automatic monthly budget suggestion.
 
 Hierarchy:
 1. available budget
 2. remaining budget
 3. monthly income
-4. target budget
+4. target budget / automatic suggestion control
 5. planned expenses list
 
 Rules:
 - key numbers at the top;
 - simple configuration;
+- each planned expense must expose a planned date;
 - planned expenses easily editable;
+- automatic budgeting must stay optional and easy to disable;
 - avoid dense tables.
 
 ## 6.6 Settings Screen
 Goal:
-- host secondary settings.
+- host secondary settings and local export actions.
 
 Rules:
 - simple screen;
 - grouped items;
+- export actions should live under a clear Export section;
 - avoid complexity in V1.
 
 ## 7. Component Guidelines
@@ -238,7 +246,8 @@ Rows for accounts and transactions must be:
 - easy to scan;
 - consistent across lists;
 - with sufficient spacing;
-- with clearly readable amount.
+- with clearly readable amount;
+- compatible with swipe-to-delete gestures without hiding the main content.
 
 ## 7.3 Buttons
 Preferences:
@@ -273,6 +282,7 @@ Rules:
 - minimize required fields;
 - validate without interrupting the flow;
 - show errors near the field;
+- destructive actions require confirmation;
 - avoid unnecessary modals.
 
 ## 9. Typography Rules
@@ -313,10 +323,11 @@ Even in V1, at least follow:
 Do not:
 - create screens with too many open fields at once;
 - make long forms without hierarchy;
-- add heavy non-essential charts;
+- add heavy or multi-purpose charts that compete with the core summary;
 - use excessive colors;
 - use ambiguous CTAs;
 - make transaction entry cumbersome;
+- hide destructive actions behind unclear gestures or terminology;
 - use unnecessarily complex financial terminology.
 
 ## 14. Default UX Bias

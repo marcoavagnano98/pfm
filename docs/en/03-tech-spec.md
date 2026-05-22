@@ -135,6 +135,8 @@ Use DataStore for:
 Examples:
 - displayed base currency
 - display preferences
+- selected Home period/trend mode
+- budget automation preference
 - simple non-critical configurations
 
 ## 9. Initial Database Design
@@ -147,6 +149,8 @@ Examples:
 - `budget_profile`
 
 ### Notes
+- `planned_expenses` must persist a `plannedDate`
+- `budget_profile` should support an optional automatic-budget flag and the last generated suggestion value
 - `budget_profile` can initially contain only one record
 - use surrogate keys (`Long`)
 - use indexes for frequently filtered fields:
@@ -173,10 +177,12 @@ Reason:
 ## 11. Date and Time Handling
 Recommended choices:
 - `LocalDate` for transaction date
+- `LocalDate` for planned expense scheduled date
 - `Instant` for `createdAt` and `updatedAt`
 
 Reason:
 - a financial transaction is mainly tied to a date, not a high-precision timestamp
+- planned expenses need an explicit day for date-aware budgeting
 - creation/update metadata can use full timestamp
 
 ## 12. Navigation Model
@@ -210,6 +216,8 @@ Plan reusable components such as:
 - transaction row
 - empty state
 - period selector
+- metric selector for yearly trend view
+- swipe-to-confirm delete row
 - primary FAB for quick add
 - labeled amount text
 
@@ -239,6 +247,7 @@ Suggested initial repositories:
 - `CategoryRepository`
 - `BudgetRepository`
 - `PlannedExpenseRepository`
+- `ExportRepository`
 
 Responsibility examples:
 - CRUD
@@ -252,6 +261,7 @@ Responsibility examples:
 - `CreateAccountUseCase`
 - `UpdateAccountUseCase`
 - `ArchiveAccountUseCase`
+- `DeleteAccountUseCase`
 - `GetAccountsUseCase`
 - `GetAccountCurrentBalanceUseCase`
 
@@ -270,9 +280,14 @@ Responsibility examples:
 - `UpdatePlannedExpenseUseCase`
 - `GetAvailableBudgetUseCase`
 - `GetRemainingBudgetUseCase`
+- `GetAutomaticBudgetSuggestionUseCase`
 
 ### Dashboard
 - `GetHomeSummaryUseCase`
+- `GetYearTrendUseCase`
+
+### Export
+- `ExportBalanceCsvUseCase`
 
 ## 17. Mapping Strategy
 Use dedicated mappers between:
@@ -310,7 +325,10 @@ Test priorities:
 - period balance calculation
 - available budget calculation
 - remaining budget calculation
+- automatic budget suggestion calculation
+- running balance generation for CSV export
 - transfer validation between distinct accounts
+- delete protections for accounts with dependent data
 - essential mappings
 
 ## 19.3 UI Testing
@@ -321,6 +339,8 @@ In V1:
 ## 20. Error Handling
 Initial approach:
 - validation errors handled close to ViewModel/UI state
+- destructive actions must require explicit confirmation before delete
+- export and budgeting failures exposed as simple UI messages
 - persistent/logical errors exposed as simple UI messages
 - avoid complex error-handling infrastructure in V1
 
@@ -369,6 +389,10 @@ Recommended implementation order:
 7. Home summary
 8. UI/UX refinement
 9. critical tests
+10. safe account and transaction deletion flows
+11. yearly trend view and Home period selection refinements
+12. balance CSV export
+13. date-aware planned expenses and optional automatic budgeting
 
 ## 26. V1 Trade-Offs Accepted
 To speed up V1, the following are accepted:
