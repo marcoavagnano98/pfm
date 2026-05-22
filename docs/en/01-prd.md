@@ -72,9 +72,13 @@ The following constraints are mandatory:
 - local persistent storage
 - monthly income
 - monthly budget
-- planned expenses
+- planned expenses with an explicit planned date
 - remaining budget calculation
-- balance by time intervals (monthly, bi-monthly, quarterly, yearly)
+- safe deletion of accounts and transactions with explicit confirmation
+- balance by selectable time intervals in Home
+- yearly trend visualization for income, expenses, or balance
+- lightweight CSV export of balance history from Settings
+- optional automatic monthly budget suggestion with manual override
 - initial dashboard with concise summary
 
 ## 9. Out of Scope for V1
@@ -84,17 +88,18 @@ The following constraints are mandatory:
 - multi-device sync
 - multi-user
 - OCR for receipts
-- advanced exports
-- complex financial automations
+- advanced or customizable exports beyond the balance CSV
+- complex financial automations beyond the optional monthly budget suggestion
 - advanced recurrence engine
 
 ## 10. Success Criteria for V1
 PFM V1 is considered successful if it allows the user to:
 
-- create and manage their financial positions;
-- quickly record manual transactions;
-- view overall balance and main transactions;
-- set a monthly budget;
-- see how much they can still spend in the month;
-- consult balances across different time intervals;
+- create, update, and safely delete their financial positions;
+- quickly record and remove manual transactions when needed;
+- view overall balance, main transactions, and yearly trends;
+- set a monthly budget manually or with an automatic suggestion;
+- plan expenses with a dedicated date and see how much can still be spent in the month;
+- consult balances across selectable time intervals in Home;
+- export a local balance CSV for offline analysis;
 - use the app continuously without perceiving it as heavy or inconvenient.

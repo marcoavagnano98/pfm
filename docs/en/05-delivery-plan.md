@@ -20,6 +20,9 @@ Main V1 milestones are:
 4. Budgeting
 5. Dashboard and summaries
 6. Polish, validations, and critical tests
+7. Safe deletion flows and interaction fixes
+8. Trend analytics and lightweight export
+9. Date-aware planning and optional budget automation
 
 ## 4. Sprint Structure
 Each sprint must include:
@@ -226,7 +229,82 @@ Improve user experience, robustness, and quality.
 - critical calculations covered by tests
 - coherent app for V1 demo/personal use
 
-## 11. Suggested Task Granularity for the Agent
+## 11. Sprint 6 — Safe Deletion and Home Period Selection
+
+### Goal
+Remove destructive interaction bugs and complete missing delete flows for V1.
+
+### Deliverables
+- account swipe-to-delete with confirmation
+- transaction swipe-to-delete with confirmation
+- Home period picker that lets the user select the active period explicitly
+- delete-safe UX copy and validation states
+
+### Tasks
+- add account deletion flow guarded by confirmation
+- replace the problematic direct account-tap delete behavior with swipe right-to-left delete
+- expose transaction deletion through the same swipe-and-confirm pattern
+- keep account and transaction edit on tap
+- extend Home so the user can choose the reference period instead of relying only on fixed chips
+- verify destructive actions update balances and summaries immediately
+
+### Definition of Done
+- tapping an account no longer triggers the delete bug
+- accounts can be deleted only through swipe + confirmation
+- transactions can be deleted only through swipe + confirmation
+- Home summaries refresh correctly for the selected period
+
+## 12. Sprint 7 — Yearly Trend View and Balance CSV Export
+
+### Goal
+Add analysis and export capabilities that remain simple enough for V1.
+
+### Deliverables
+- yearly plot for monthly expenses, income, or balance
+- metric selector for the yearly plot
+- Settings > Export entry for `balance.csv`
+- CSV contract with `trans_id`, `date`, `amount`, `account`, `remaining_balance_in_account`, `type`
+
+### Tasks
+- add a one-year monthly aggregation for income, expense, and balance
+- create a toggle to switch the chart between expenses, income, and balance
+- show the yearly chart from Home without overloading the dashboard
+- add local CSV export in Settings > Export
+- generate CSV rows with running balance per account after each transaction
+- verify export ordering, formatting, and offline file creation
+
+### Definition of Done
+- the user can inspect one year of monthly data for each supported metric
+- the chart can switch between expenses, income, and balance without leaving Home
+- `balance.csv` is generated locally with the required columns
+- exported running balances stay coherent with persisted transactions
+
+## 13. Sprint 8 — Planned Expense Scheduling and Optional Automatic Budgeting
+
+### Goal
+Make budget planning date-aware and optionally assisted.
+
+### Deliverables
+- planned expense date field
+- optional automatic monthly budget suggestion
+- manual budget override alongside the automatic mode
+- updated budget calculations based on planned dates and remaining time
+
+### Tasks
+- persist a dedicated date for each planned expense
+- surface planned expense date in the budget UI
+- compute the remaining time in the current month for budget guidance
+- derive an automatic monthly budget suggestion from monthly income, dated planned expenses, and remaining time
+- let the user enable or disable automatic budgeting at any time
+- preserve manual target budget editing when automation is off
+
+### Definition of Done
+- the user can assign a date to every planned expense
+- automatic budgeting is optional and understandable
+- the suggested monthly budget updates when income, planned expenses, or remaining time changes
+- manual budgeting remains available without hidden side effects
+
+## 14. Suggested Task Granularity for the Agent
 Each ideal task should cover one of:
 - one entity + DAO + small repository
 - one single screen
@@ -234,7 +312,7 @@ Each ideal task should cover one of:
 - one single business calculation
 - one local and contained refactor
 
-## 12. Example Task Sequence
+## 15. Example Task Sequence
 Example sequence of small tasks:
 
 ### Sprint 0
@@ -281,7 +359,25 @@ Example sequence of small tasks:
 31. add use-case tests
 32. perform visual polish
 
-## 13. Release Readiness Checklist
+### Sprint 6
+33. implement `DeleteAccountUseCase`
+34. add account swipe-to-delete with confirmation
+35. add transaction swipe-to-delete with confirmation
+36. replace fixed period chips with explicit Home period selection
+
+### Sprint 7
+37. implement yearly monthly aggregate queries
+38. create Home trend plot with metric toggle
+39. add `ExportBalanceCsvUseCase`
+40. expose `balance.csv` action in Settings > Export
+
+### Sprint 8
+41. add planned expense scheduled date
+42. implement automatic budget suggestion calculation
+43. add automatic/manual budget mode toggle
+44. cover new budget and export logic with focused tests
+
+## 16. Release Readiness Checklist
 Before declaring V1 ready:
 
 - [ ] account creation works
@@ -297,11 +393,18 @@ Before declaring V1 ready:
 - [ ] remaining budget correct
 - [ ] dashboard with key metrics
 - [ ] period summary correct
+- [ ] account delete flow uses swipe + confirmation
+- [ ] transaction delete flow uses swipe + confirmation
+- [ ] Home period selection works for the supported range
+- [ ] yearly trend view is readable and correct
+- [ ] `balance.csv` export contains the required columns and running balances
+- [ ] planned expense dates are persisted
+- [ ] optional automatic budget suggestion is correct and can be disabled
 - [ ] base validations present
 - [ ] UI usable without major friction
 - [ ] no dependency on external services
 
-## 14. Risks and Mitigations
+## 17. Risks and Mitigations
 
 ### Risk 1 — Early overengineering
 **Mitigation:** keep V1 narrow and tasks small.
@@ -315,11 +418,15 @@ Before declaring V1 ready:
 ### Risk 4 — Token waste with oversized tasks
 **Mitigation:** use short prompts focused only on relevant files.
 
-## 15. Recommended Immediate Next Step
-After these documents, the ideal next step is to create:
+### Risk 5 — Accidental data loss from delete actions
+**Mitigation:** require swipe right-to-left followed by explicit confirmation and validate dependent balance updates.
 
-- `docs/en/04-ui-guidelines.md`
-- `docs/en/decision-log.md`
+### Risk 6 — Misleading analytics or export output
+**Mitigation:** reuse the same aggregate and running-balance rules already defined for summaries and balances.
 
-and then start with a first Sprint 0 task:
-**bootstrap the Android project with base stack and navigation shell**.
+### Risk 7 — Budget automation feels opaque
+**Mitigation:** keep automatic budgeting optional, expose the formula clearly, and preserve manual override.
+
+## 18. Recommended Immediate Next Step
+The ideal next step is to start Sprint 6 with:
+**implement account swipe-to-delete with confirmation and remove the current destructive account interaction bug**.

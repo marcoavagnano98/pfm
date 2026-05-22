@@ -385,6 +385,22 @@ Verification:
 - Bottom navigation smoke reached Home, Accounts, Transactions, Budget, and Settings by `uiautomator` text inspection.
 - Emulator was shut down with `adb emu kill`; `adb devices` then showed no attached devices.
 
+
+## 2026-05-22 — V1 roadmap refresh
+
+Assumptions:
+- The requested account deletion bug fix should be modeled as a safe swipe right-to-left delete flow with explicit confirmation.
+- Existing readiness and evidence documents should stay focused on implemented behavior, so this update only changes planning/product/UX/technical docs.
+
+Changes:
+- Updated the product scope docs to include safe delete flows, flexible Home period selection, yearly trend analysis, lightweight CSV export, dated planned expenses, and optional automatic budgeting in V1.
+- Extended the technical and UX guidance to cover swipe-to-delete confirmations, the yearly trend view, export requirements, planned expense dates, and optional budget automation.
+- Expanded the delivery plan with new milestones plus Sprint 6, Sprint 7, and Sprint 8 to schedule the requested fix/features.
+
+Verification:
+- Reviewed all Markdown files in `docs/en` to identify which documents describe future scope versus current evidence.
+- Left `release-readiness-audit.md`, `manual-smoke-test.md`, and `sprint-deliverables-matrix.md` unchanged because the new items are not implemented yet.
+
 ## 2026-05-22 — CRUD and persistence smoke test
 
 Assumptions:
